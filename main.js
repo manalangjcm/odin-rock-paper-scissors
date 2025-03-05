@@ -21,7 +21,14 @@ function getComputerChoice() {
             break;
     }
 
-    console.log(choice);
+    return choice;
 }
 
-getComputerChoice();
+function getHumanChoice() {
+    const choice = prompt("Choose: rock | paper | scissors");
+
+    return choice;
+}
+
+console.log(getHumanChoice());
+console.log(getComputerChoice());
