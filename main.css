@@ -42,17 +42,18 @@ body {
     text-transform: uppercase;
 }
 
-button {
+.choices button {
     border: none;
     border-radius: 50%;
     cursor: pointer;
     font-size: 6rem;
     height: 200px;
-    transition: border-radius 0.2s, font-size 0.2s;
+    transition: background-color 0.2s, border-radius 0.2s, font-size 0.2s;
     width: 200px;
 }
 
-button:hover {
+.choices button:hover {
+    background-color: rgb(32, 32, 32);
     border-radius: 20%;
     font-size: 6.5rem;
 }
@@ -92,13 +93,26 @@ button:hover {
     width: 100%;
 }
 
+.continue-button {
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: 700;
+    height: 60px;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.continue-button:hover {
+    background-color: rgb(32, 32, 32);
+    color: white;
+}
+
 .hovered {
     color: black;
     font-weight: 700;
-}
-
-.show {
-    display: flex;
 }
 
 .hide {

@@ -1,18 +1,36 @@
-const ROCK_CHOICE = 'rock';
-const PAPER_CHOICE = 'paper';
-const SCISSORS_CHOICE = 'scissors';
+// Game Choices
+const ROCK_CHOICE = "rock";
+const PAPER_CHOICE = "paper";
+const SCISSORS_CHOICE = "scissors";
 
-const choiceButtons = document.querySelectorAll("button");
-const choiceText = document.querySelector("#choice-text");
-
+// Game Variables
 let humanScore = 0;
 let computerScore = 0;
 
+// DOM Elements
+const choiceButtons = document.querySelectorAll(".choices button");
+const choiceText = document.querySelector("#choice-text");
+
+const mainScreen = document.querySelector("#main-screen");
+const computerScreen = document.querySelector("#computer-screen");
+const roundResultsScreen = document.querySelector("#round-results-screen");
+const gameOverScreen = document.querySelector("#game-over-screen");
+
+const humanScoreText = document.querySelector("#human-score-text");
+const humanFinalScoreText = document.querySelector("#human-final-score-text");
+const computerScoreText = document.querySelector("#computer-score-text");
+const computerFinalScoreText = document.querySelector("#computer-final-score-text");
+
+const roundResultsText = document.querySelector("#round-results-text");
+const gameOverText = document.querySelector("#game-over-text");
+
+const continueButton = document.querySelector("#continue-button");
+
+function startRound() {
+    changeScreen("main");
+}
+
 function playRound(humanChoice, computerChoice) {
-    // Make human choice parameter case-insensitive
-    const humanSelection = humanChoice.toLowerCase();
-    const computerSelection = computerChoice.toLowerCase();
-    
     let humanWin = false;
     let computerWin = false;
 
@@ -21,9 +39,9 @@ function playRound(humanChoice, computerChoice) {
     // Human is scissors and computer is rock
     if 
     (
-        (humanSelection === "rock" && computerSelection === "paper") ||
-        (humanSelection === "paper" && computerSelection === "scissors") ||
-        (humanSelection === "scissors" && computerSelection === "rock")
+        (humanChoice === ROCK_CHOICE && computerChoice === PAPER_CHOICE) ||
+        (humanChoice === PAPER_CHOICE && computerChoice === SCISSORS_CHOICE) ||
+        (humanChoice === SCISSORS_CHOICE && computerChoice === ROCK_CHOICE)
     ) {
         computerWin = true;
     }
@@ -32,31 +50,87 @@ function playRound(humanChoice, computerChoice) {
     // Human is scissors and computer is paper
     else if 
     (
-        (humanSelection === "rock" && computerSelection === "scissors") ||
-        (humanSelection === "paper" && computerSelection === "rock") ||
-        (humanSelection === "scissors" && computerSelection === "paper")
+        (humanChoice === ROCK_CHOICE && computerChoice === SCISSORS_CHOICE) ||
+        (humanChoice === PAPER_CHOICE && computerChoice === ROCK_CHOICE) ||
+        (humanChoice === SCISSORS_CHOICE && computerChoice === PAPER_CHOICE)
     ) {
         humanWin = true;
     }
 
-    // Display both choices
-    console.log(`You: ${humanSelection} vs. Computer: ${computerSelection}`);
+    const roundData = {
+        humanChoice,
+        computerChoice,
+        "isHumanWin": humanWin,
+        "isComputerWin": computerWin
+    };
 
-    // If both lost, don't increment scores and display message "Tie! Please try again."
-    if (humanWin === false && computerWin === false) {
-        console.log("Tie! Please try again.");
+    endRound(roundData);
+}
+
+function endRound(roundData = {}) {
+    const canContinueGame = manageScores(roundData);
+    updateUI(!canContinueGame, roundData);
+
+    // End game if human or computer scores have reached 5 points
+    if (!canContinueGame) {
+        changeScreen("gameover");
+        return;
     }
-    // If human wins, increment humanScore and display message "You win! {humanSelection} beats {computerSelection}"
-    else if (humanWin === true && computerWin === false) {
+
+    changeScreen("roundresults");
+}
+
+function continueRound() {
+    startRound();
+}
+
+function manageScores(roundData = {}) {
+    if (roundData.isHumanWin) {
         humanScore++;
-        console.log(
-            `You win! ${getFormattedString(humanSelection)} beats ${getFormattedString(computerSelection)}`);
-    }
-    // If computer wins, increment computerScore and display message "You lose! {computerSelection} beats {humanSelection}"
-    else if (humanWin === false && computerWin === true) {
+        console.log("Human won the round.");
+    } else if (roundData.isComputerWin) {
         computerScore++;
-        console.log(
-            `You lose! ${getFormattedString(computerSelection)} beats ${getFormattedString(humanSelection)}`);
+        console.log("Computer won the round.");
+    }
+
+    // Return false if human or computer scores have reached 5 points
+    if (humanScore >= 5 || computerScore >= 5) {
+        return false;
+    }
+
+    return true;
+}
+
+function updateUI(isGameEnded, roundData = {}) {
+    humanScoreText.textContent = humanScore;
+    humanFinalScoreText.textContent = humanScore;
+    computerScoreText.textContent = computerScore;
+    computerFinalScoreText.textContent = computerScore;
+
+    if (isGameEnded) {
+        if (humanScore > computerScore) {
+            gameOverText.textContent = "You won against the computer! Congratulations! 🎉";
+            humanFinalScoreText.classList.add("winning");
+            computerFinalScoreText.classList.remove("winning");
+        } else {
+            gameOverText.textContent = "You lost against the computer. Try again next time! 😔";
+            humanFinalScoreText.classList.remove("winning");
+            computerFinalScoreText.classList.add("winning");
+        }
+    } else {
+        if (roundData.isHumanWin == roundData.isComputerWin) {
+            roundResultsText.textContent = `It's a tie! ${getFormattedString(roundData.humanChoice)} and ${getFormattedString(roundData.computerChoice)}.`;
+            humanScoreText.classList.remove("winning");
+            computerScoreText.classList.remove("winning");
+        } else if (roundData.isHumanWin) {
+            roundResultsText.textContent = `You won! ${getFormattedString(roundData.humanChoice)} beats ${getFormattedString(roundData.computerChoice)}.`;
+            humanScoreText.classList.add("winning");
+            computerScoreText.classList.remove("winning");
+        } else if (roundData.isComputerWin) {
+            roundResultsText.textContent = `You lost. ${getFormattedString(roundData.computerChoice)} beats ${getFormattedString(roundData.humanChoice)}.`;
+            humanScoreText.classList.remove("winning");
+            computerScoreText.classList.add("winning");
+        }
     }
 }
 
@@ -65,10 +139,17 @@ function getFormattedString(string) {
 }
 
 function initializeGame() {
+    // Reset game variables
+    humanScore = 0;
+    computerScore = 0;
+
+    startRound();
+
+    // Add event listeners to choice buttons
     choiceButtons.forEach(button => {
         const dataChoice = button.getAttribute("data-choice");
 
-        button.addEventListener("mouseenter", event => {
+        button.addEventListener("mouseenter", () => {
             choiceText.textContent = dataChoice;
             choiceText.classList.add("hovered");
         });
@@ -78,26 +159,53 @@ function initializeGame() {
             choiceText.classList.remove("hovered");
         });
 
-        button.addEventListener("click", event => {
-            playRound(dataChoice, getComputerChoice());
+        button.addEventListener("click", () => {
+            changeScreen("computer");
+
+            const TWO_SECONDS = 2000;
+            setTimeout(() => {
+                playRound(dataChoice, getComputerChoice());
+            }, TWO_SECONDS);
         });
     });
+
+    continueButton.addEventListener("click", continueRound);
 }
 
-function deinitializeGame() {
-    
+function changeScreen(screenName) {
+    switch (screenName.toLowerCase()) {
+        case "main":
+            mainScreen.classList.remove("hide");
+            computerScreen.classList.add("hide");
+            roundResultsScreen.classList.add("hide");
+            gameOverScreen.classList.add("hide");
+            break;
+        case "computer":
+            mainScreen.classList.add("hide");
+            computerScreen.classList.remove("hide");
+            roundResultsScreen.classList.add("hide");
+            gameOverScreen.classList.add("hide");
+            break;
+        case "roundresults":
+            mainScreen.classList.add("hide");
+            computerScreen.classList.add("hide");
+            roundResultsScreen.classList.remove("hide");
+            gameOverScreen.classList.add("hide");
+            break;
+        case "gameover":
+            mainScreen.classList.add("hide");
+            computerScreen.classList.add("hide");
+            roundResultsScreen.classList.add("hide");
+            gameOverScreen.classList.remove("hide");
+            break;
+        default:
+            mainScreen.classList.remove("hide");
+            computerScreen.classList.add("hide");
+            roundResultsScreen.classList.add("hide");
+            gameOverScreen.classList.add("hide");
+            break;
+    }
 }
-
-// function getHumanChoice(event) {
-//     // Check human and computer scores
-//     if (humanScore >= 5) {
-//         console.log("Game has ended. You have won the game!");
-//     } else if (computerScore >= 5) {
-//         console.log("Game has ended. You lost the game! Computer wins.")
-//     }
-
-//     console.log(`Human Score: ${humanScore} | Computer Score: ${computerScore}`);
-// }
 
 function getComputerChoice() {
     const randomNumber = parseInt(Math.floor(Math.random() * 3));
@@ -124,6 +232,11 @@ function getComputerChoice() {
 
 function playGame() {
     initializeGame();
+}
+
+
+function endGame() {
+    changeScreen("gameover");   
 }
 
 playGame();

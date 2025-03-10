@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>Odin Rock Paper Scissors</title>
         <link rel="stylesheet" href="./main.css">
+        <script src="./main.js" defer></script>
     </head>
     <body>
         <!-- Main Screen -->
@@ -24,20 +25,20 @@
         </div>
         <!-- Round Results Screen -->
         <div id="round-results-screen" class="screen hide">
-            <p id="round-results-header-text" class="header-text">You won/lost! You/computer won!</p>
+            <p class="header-text">Round ended!</p>
             <div class="container">
                 <div class="choices">
                     <div class="score-item">
-                        <button id="human-score" class="disabled winning">0</button>
+                        <button id="human-score-text" class="disabled winning">0</button>
                         <p class="score-item__text">You</p>
                     </div>
                     <div class="score-item">
-                        <button id="computer-score" class="disabled">0</button>
+                        <button id="computer-score-text" class="disabled">0</button>
                         <p class="score-item__text">Computer</p>
                     </div>
                 </div>
-                <div id="round-results-text" class="round-results-text">❓ beats ❓.</div>
-                <div class="round-results-tooltip-text">Click anywhere or press SPACEBAR to continue.</div>
+                <div id="round-results-text" class="round-results-text">You/lost. ❓ beats ❓.</div>
+                <button id="continue-button" class="continue-button">Continue</button>
             </div>
         </div>
         <!-- Game Over Screen -->
@@ -47,17 +48,16 @@
             <div class="container">
                 <div class="choices">
                     <div class="score-item">
-                        <button id="human-score" class="disabled winning">0</button>
+                        <button id="human-final-score-text" class="disabled winning">0</button>
                         <p class="score-item__text">You</p>
                     </div>
                     <div class="score-item">
-                        <button id="computer-score" class="disabled">0</button>
+                        <button id="computer-final-score-text" class="disabled">0</button>
                         <p class="score-item__text">Computer</p>
                     </div>
                 </div>
                 <div id="game-over-text" class="round-results-text">You/computer have won the game!</div>
             </div>
         </div>
-        <script src="./main.js"></script>
     </body>
 </html>
