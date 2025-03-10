@@ -17,6 +17,27 @@
                 <div id="choice-text" class="choice-text">Please hover over the choices above</div>
             </div>
         </div>
+        <div class="computer">
+            <p class="header-text">Waiting for computer turn...</p>
+        </div>
+        <div class="round-results hide">
+            <p id="round-results-header-text" class="header-text">You won/lost! You/computer won!</p>
+            <div class="container">
+                <div class="choices">
+                    <div class="choice-item">
+                        <button id="winning-choice" class="disabled winning">❓</button>
+                        <p class="choice-item__text">You</p>
+                    </div>
+                    <p id="comparison-text" class="comparison-text">&gt;</p>
+                    <div class="choice-item">
+                        <button id="losing-choice" class="disabled">❓</button>
+                        <p class="choice-item__text">Computer</p>
+                    </div>
+                </div>
+                <div id="round-results-text" class="round-results-text">❓ beats ❓.</div>
+                <div class="round-results-tooltip-text">Click anywhere or press SPACEBAR to continue.</div>
+            </div>
+        </div>
         <script src="./main.js"></script>
     </body>
 </html>
