@@ -1,32 +1,12 @@
+const ROCK_CHOICE = 'rock';
+const PAPER_CHOICE = 'paper';
+const SCISSORS_CHOICE = 'scissors';
+
+const choiceButtons = document.querySelectorAll("button");
+const choiceText = document.querySelector("#choice-text");
+
 let humanScore = 0;
 let computerScore = 0;
-
-function getHumanChoice() {
-    return prompt("Choose: rock | paper | scissors");
-}
-
-function getComputerChoice() {
-    const randomNumber = parseInt(Math.floor(Math.random() * 3));
-    
-    let choice = "";
-
-    switch (randomNumber) {
-        case 0: // Rock
-            choice = "rock";
-            break;
-        case 1: // Paper
-            choice = "paper";
-            break;
-        case 2: // Scissors
-            choice = "scissors";
-            break;
-        default: // Invalid
-            console.error("The given random number was invalid!");
-            break;
-    }
-
-    return choice;
-}
 
 function playRound(humanChoice, computerChoice) {
     // Make human choice parameter case-insensitive
@@ -84,33 +64,66 @@ function getFormattedString(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function playGame() {
-    let round = 1;
+function initializeGame() {
+    choiceButtons.forEach(button => {
+        const dataChoice = button.getAttribute("data-choice");
+
+        button.addEventListener("mouseenter", event => {
+            choiceText.textContent = dataChoice;
+            choiceText.classList.add("hovered");
+        });
+
+        button.addEventListener("mouseleave", () => {
+            choiceText.textContent = "Please hover over the choices above";
+            choiceText.classList.remove("hovered");
+        });
+
+        button.addEventListener("click", event => {
+            playRound(dataChoice, getComputerChoice());
+        });
+    });
+}
+
+function deinitializeGame() {
     
-    // Play five (5) rounds
-    while (round <= 5) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
+}
 
-        playRound(humanSelection, computerSelection);
+// function getHumanChoice(event) {
+//     // Check human and computer scores
+//     if (humanScore >= 5) {
+//         console.log("Game has ended. You have won the game!");
+//     } else if (computerScore >= 5) {
+//         console.log("Game has ended. You lost the game! Computer wins.")
+//     }
 
-        round++;
+//     console.log(`Human Score: ${humanScore} | Computer Score: ${computerScore}`);
+// }
+
+function getComputerChoice() {
+    const randomNumber = parseInt(Math.floor(Math.random() * 3));
+    
+    let choice = "";
+
+    switch (randomNumber) {
+        case 0: // Rock
+            choice = ROCK_CHOICE;
+            break;
+        case 1: // Paper
+            choice = PAPER_CHOICE;
+            break;
+        case 2: // Scissors
+            choice = SCISSORS_CHOICE;
+            break;
+        default: // Invalid
+            console.error("The given random number was invalid!");
+            break;
     }
 
-    // Determine winner
-    console.log("===========================================================================================");
+    return choice;
+}
 
-    if (humanScore === computerScore) {
-        console.log("Game has ended. No winners! You and the computer have tied the game.");
-    } else if (humanScore > computerScore) {
-        console.log("Game has ended. You have won the game!");
-    } else if (computerScore > humanScore) {
-        console.log("Game has ended. You lost the game! Computer wins.")
-    }
-
-    console.log(`Human Score: ${humanScore} | Computer Score: ${computerScore}`);
-
-    console.log("===========================================================================================");
+function playGame() {
+    initializeGame();
 }
 
 playGame();
