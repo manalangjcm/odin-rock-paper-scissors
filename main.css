@@ -4,9 +4,7 @@ body {
     font-family: Arial, Helvetica, sans-serif
 }
 
-.main,
-.computer,
-.round-results {
+.screen {
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -37,7 +35,7 @@ body {
     justify-content: center;
 }
 
-.choice-item__text {
+.score-item__text {
     color: rgb(112, 112, 112);
     font-weight: 700;
     text-align: center;
