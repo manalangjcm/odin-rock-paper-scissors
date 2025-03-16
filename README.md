@@ -1,6 +1,6 @@
 # odin-rock-paper-scissors
 
-A simple online version of the famous hand game "Rock Paper Scissors", built as part of The Odin Project.
+A simple online version of the famous hand game "Rock Paper Scissors", built as part of [The Odin Project](https://www.theodinproject.com/).
 
 [Course Project Link](https://www.theodinproject.com/lessons/foundations-rock-paper-scissors)
 
